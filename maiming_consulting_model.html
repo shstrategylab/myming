@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>마이밍 — 컨설팅·코칭 패키지 모델</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink:      #f0ece6;
+  --ink-mid:  #d4cfc8;
+  --ink-soft: #a09890;
+  --ink-pale: #6a6460;
+  --paper:    #1c1a18;
+  --paper-2:  #242220;
+  --paper-3:  #2c2926;
+  --gold:     #c8a45a;
+  --gold-lt:  #8c6e30;
+  --gold-dk:  #e8d4a0;
+  --indigo:   #7b82c4;
+  --sage:     #7aab88;
+  --rust:     #c87a56;
+  --line:     rgba(200,164,90,0.25);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  overflow-x: hidden;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(200,164,90,0.1) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 80% 90%, rgba(123,130,196,0.07) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.deco-circle {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+.deco-circle.c1 {
+  width: 600px; height: 600px;
+  top: -200px; right: -150px;
+  border: 1px solid rgba(200,164,90,0.15);
+}
+.deco-circle.c2 {
+  width: 400px; height: 400px;
+  top: -100px; right: -50px;
+  border: 1px solid rgba(200,164,90,0.1);
+}
+.deco-circle.c3 {
+  width: 500px; height: 500px;
+  bottom: -200px; left: -150px;
+  border: 1px solid rgba(123,130,196,0.15);
+}
+
+.container {
+  position: relative; z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 2rem 5rem;
+}
+
+/* ── 헤더 ── */
+header {
+  padding: 4rem 0 3rem;
+  text-align: center;
+}
+
+.header-eyebrow {
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.2s forwards;
+}
+
+.header-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-weight: 300;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.4s forwards;
+}
+
+.header-title span {
+  font-weight: 700;
+  color: var(--gold-dk);
+}
+
+.header-subtitle {
+  font-size: 13px;
+  color: var(--ink-soft);
+  letter-spacing: 0.08em;
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.6s forwards;
+}
+
+.header-line {
+  width: 60px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 0 auto;
+  opacity: 0;
+  animation: fadeIn 0.8s 0.8s forwards;
+}
+
+/* ── 섹션 ── */
+.section {
+  margin-bottom: 3.5rem;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--line), transparent);
+}
+
+/* ── 흐름 ── */
+.flow {
+  display: grid;
+  grid-template-columns: 1fr 48px 1fr 48px 1fr;
+  align-items: center;
+}
+
+.flow-box {
+  background: var(--paper-2);
+  border: 1px solid rgba(200,164,90,0.18);
+  border-radius: 4px;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+.flow-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+}
+.flow-box.f1::before { background: linear-gradient(90deg, var(--indigo), transparent); }
+.flow-box.f2::before { background: linear-gradient(90deg, var(--sage), transparent); }
+.flow-box.f3::before { background: linear-gradient(90deg, var(--rust), transparent); }
+.flow-box:hover {
+  border-color: rgba(200,164,90,0.6);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  transform: translateY(-2px);
+}
+
+.flow-num {
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  margin-bottom: 0.75rem;
+}
+.f1 .flow-num { color: var(--indigo); }
+.f2 .flow-num { color: var(--sage); }
+.f3 .flow-num { color: var(--rust); }
+
+.flow-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 0.5rem;
+}
+.flow-sub {
+  font-size: 12px;
+  color: var(--ink-soft);
+  line-height: 1.7;
+}
+.flow-arrow {
+  text-align: center;
+  color: var(--gold);
+  font-size: 18px;
+  opacity: 0.5;
+}
+
+/* ── 티어 ── */
+.tier-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: rgba(200,164,90,0.15);
+  border: 1px solid rgba(200,164,90,0.18);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.tier-card {
+  background: var(--paper);
+  display: flex;
+  flex-direction: column;
+  transition: background 0.3s;
+}
+.tier-card:hover { background: var(--paper-2); }
+
+.tier-head {
+  padding: 1.5rem 1.25rem 1.25rem;
+  border-bottom: 1px solid rgba(200,164,90,0.15);
+  position: relative;
+}
+.tier-head::after {
+  content: attr(data-num);
+  position: absolute;
+  top: 1rem; right: 1.25rem;
+  font-family: 'Cinzel', serif;
+  font-size: 32px;
+  font-weight: 600;
+  opacity: 0.05;
+  color: var(--ink);
+  line-height: 1;
+}
+.tier-num {
+  font-family: 'Cinzel', serif;
+  font-size: 8px;
+  letter-spacing: 0.25em;
+  margin-bottom: 0.5rem;
+}
+.t1 .tier-num { color: var(--indigo); }
+.t2 .tier-num { color: var(--sage); }
+.t3 .tier-num { color: var(--rust); }
+.tier-name {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 0.25rem;
+}
+.tier-price {
+  font-size: 10px;
+  color: var(--ink-pale);
+  letter-spacing: 0.05em;
+}
+.tier-body {
+  padding: 1rem 1.25rem 1.25rem;
+  flex: 1;
+}
+.tier-item {
+  font-size: 12px;
+  color: var(--ink-soft);
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--paper-3);
+  line-height: 1.5;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+.tier-item::before {
+  content: '·';
+  color: var(--gold);
+  flex-shrink: 0;
+}
+.tier-item:last-child { border-bottom: none; }
+.tier-item b { color: var(--ink); font-weight: 500; }
+
+/* ── 세션 ── */
+.session-flow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  position: relative;
+}
+.session-flow::before {
+  content: '';
+  position: absolute;
+  top: 28px; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-lt), var(--gold-lt), transparent);
+  z-index: 0;
+}
+
+.step-box {
+  position: relative; z-index: 1;
+  padding: 0 1rem 1.25rem;
+  text-align: center;
+}
+.step-box:first-child { padding-left: 0; }
+.step-box:last-child { padding-right: 0; }
+
+.step-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 3px solid var(--paper);
+  box-shadow: 0 0 0 1px var(--gold);
+  margin: 0 auto 1.25rem;
+  transition: transform 0.3s;
+}
+.step-box:hover .step-dot { transform: scale(1.4); }
+
+.step-num {
+  font-family: 'Cinzel', serif;
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  color: var(--ink-pale);
+  margin-bottom: 0.5rem;
+}
+.step-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 0.5rem;
+}
+.step-desc {
+  font-size: 11px;
+  color: var(--ink-soft);
+  line-height: 1.7;
+  margin-bottom: 0.625rem;
+}
+.step-tool {
+  display: inline-block;
+  font-size: 9px;
+  color: var(--gold-dk);
+  background: rgba(200,164,90,0.1);
+  border: 1px solid rgba(200,164,90,0.18);
+  padding: 3px 8px;
+  border-radius: 2px;
+  letter-spacing: 0.05em;
+}
+
+/* ── 커뮤니티 ── */
+.comm-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.comm-card {
+  border: 1px solid rgba(200,164,90,0.18);
+  border-radius: 4px;
+  padding: 1.5rem 1.25rem;
+  background: var(--paper);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.comm-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+}
+.comm-card.ca::after { background: linear-gradient(90deg, var(--indigo), transparent); }
+.comm-card.cb::after { background: linear-gradient(90deg, var(--sage), transparent); }
+.comm-card.cc::after { background: linear-gradient(90deg, var(--rust), transparent); }
+.comm-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 36px rgba(0,0,0,0.25);
+}
+
+.comm-stage {
+  font-family: 'Cinzel', serif;
+  font-size: 8px;
+  letter-spacing: 0.25em;
+  margin-bottom: 0.5rem;
+}
+.ca .comm-stage { color: var(--indigo); }
+.cb .comm-stage { color: var(--sage); }
+.cc .comm-stage { color: var(--rust); }
+
+.comm-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 0.625rem;
+}
+.comm-desc {
+  font-size: 12px;
+  color: var(--ink-soft);
+  line-height: 1.7;
+  margin-bottom: 0.875rem;
+}
+.comm-badge {
+  display: inline-block;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  padding: 3px 10px;
+  border-radius: 2px;
+}
+.badge-a { background: rgba(123,130,196,0.15); color: var(--indigo); }
+.badge-b { background: rgba(122,171,136,0.12); color: var(--sage); }
+.badge-c { background: rgba(200,122,86,0.12); color: var(--rust); }
+
+/* ── 수익 ── */
+.revenue-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.rev-box {
+  border: 1px solid rgba(200,164,90,0.18);
+  border-radius: 4px;
+  padding: 1.5rem;
+  background: var(--paper-2);
+  position: relative;
+  overflow: hidden;
+}
+.rev-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+}
+.rev-box:first-child::before { background: var(--gold); }
+.rev-box:last-child::before { background: var(--indigo); }
+
+.rev-label {
+  font-family: 'Cinzel', serif;
+  font-size: 8px;
+  letter-spacing: 0.25em;
+  color: var(--gold-dk);
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--line);
+}
+.rev-item {
+  font-size: 12px;
+  color: var(--ink-soft);
+  padding: 0.375rem 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  line-height: 1.5;
+}
+.rev-item::before {
+  content: '—';
+  color: var(--gold);
+  flex-shrink: 0;
+  font-size: 10px;
+}
+.rev-item b { color: var(--ink); font-weight: 500; }
+
+.divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line), var(--line), transparent);
+  margin: 3rem 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  border-top: 1px solid var(--line);
+}
+.footer-mark {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--ink-pale);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@media (max-width: 720px) {
+  .container { padding: 0 1.25rem 4rem; }
+  .flow { grid-template-columns: 1fr; gap: 12px; }
+  .flow-arrow { display: none; }
+  .tier-grid { grid-template-columns: 1fr; }
+  .session-flow { grid-template-columns: 1fr 1fr; }
+  .session-flow::before { display: none; }
+  .comm-grid, .revenue-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="deco-circle c1"></div>
+<div class="deco-circle c2"></div>
+<div class="deco-circle c3"></div>
+
+<div class="container">
+
+  <header>
+    <p class="header-eyebrow">Maiming Consulting &amp; Coaching</p>
+    <h1 class="header-title">마이밍 <span>컨설팅·코칭</span><br>패키지 모델</h1>
+    <p class="header-subtitle">진단 · 설계 · 커뮤니티 — 3단계 성장 여정</p>
+    <div class="header-line"></div>
+  </header>
+
+  <section class="section">
+    <p class="section-label">전체 흐름</p>
+    <div class="flow">
+      <div class="flow-box f1">
+        <p class="flow-num">STAGE 01 · 진단</p>
+        <p class="flow-title">진단</p>
+        <p class="flow-sub">원국·십성·대운·세운<br>사주풀이 + 과거 패턴 대입</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box f2">
+        <p class="flow-num">STAGE 02 · 설계</p>
+        <p class="flow-title">설계</p>
+        <p class="flow-sub">결핍 보완 전략 +<br>AI로 인생 2막 시나리오 도출</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box f3">
+        <p class="flow-num">STAGE 03 · 커뮤니티</p>
+        <p class="flow-title">커뮤니티</p>
+        <p class="flow-sub">사례 공유·소통·공개강의<br>경제 생태계 참여</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="section">
+    <p class="section-label">컨설팅·코칭 패키지 — 3티어</p>
+    <div class="tier-grid">
+      <div class="tier-card">
+        <div class="tier-head t1" data-num="I">
+          <p class="tier-num">TIER 1 · 보급형</p>
+          <p class="tier-name">기본 진단</p>
+          <p class="tier-price">자동화 · 저가</p>
+        </div>
+        <div class="tier-body">
+          <div class="tier-item"><b>원국 분석</b> — AI 자동 생성</div>
+          <div class="tier-item"><b>십성 풀이</b> — 기질·강약점 리포트</div>
+          <div class="tier-item"><b>대운·세운</b> — 향후 3년 타이밍 표</div>
+          <div class="tier-item"><b>결핍 오행</b> — 보완 가이드 제공</div>
+          <div class="tier-item">PDF 리포트 다운로드</div>
+        </div>
+      </div>
+      <div class="tier-card">
+        <div class="tier-head t2" data-num="II">
+          <p class="tier-num">TIER 2 · 심화형</p>
+          <p class="tier-name">패턴 설계</p>
+          <p class="tier-price">반자동화 · 중가</p>
+        </div>
+        <div class="tier-body">
+          <div class="tier-item">티어1 전체 포함</div>
+          <div class="tier-item"><b>과거 이력 대입</b> — 라이프로그 맵</div>
+          <div class="tier-item"><b>패턴 분석</b> — 반복 회로도 도출</div>
+          <div class="tier-item"><b>AI 설계 요청서</b> — 프롬프트 패키지</div>
+          <div class="tier-item"><b>운영자 코멘트</b> — 서면 피드백 1회</div>
+          <div class="tier-item">커뮤니티 우선 참여권</div>
+        </div>
+      </div>
+      <div class="tier-card">
+        <div class="tier-head t3" data-num="III">
+          <p class="tier-num">TIER 3 · VIP형</p>
+          <p class="tier-name">1:1 멘토링</p>
+          <p class="tier-price">수동 · 프리미엄</p>
+        </div>
+        <div class="tier-body">
+          <div class="tier-item">티어1·2 전체 포함</div>
+          <div class="tier-item"><b>1:1 대화 세션</b> — 내면 진실 끌어내기</div>
+          <div class="tier-item"><b>언행심리 분석</b> — 마스터 직접 해석</div>
+          <div class="tier-item"><b>인생 2막 전략서</b> — 맞춤 솔루션</div>
+          <div class="tier-item"><b>분기 팔로업</b> — 세운 흐름 점검</div>
+          <div class="tier-item">마스터 양성 과정 우선 초대</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="section">
+    <p class="section-label">티어 2·3 — 세션 진행 4단계</p>
+    <div class="session-flow">
+      <div class="step-box">
+        <div class="step-dot"></div>
+        <p class="step-num">STEP 01</p>
+        <p class="step-title">원국 읽기</p>
+        <p class="step-desc">일간 중심으로 십성 배치 파악. 강한 오행·약한 오행 식별</p>
+        <span class="step-tool">깃허브 사주풀이 툴</span>
+      </div>
+      <div class="step-box">
+        <div class="step-dot"></div>
+        <p class="step-num">STEP 02</p>
+        <p class="step-title">대운·세운 대입</p>
+        <p class="step-desc">현재 어떤 십성 운이 흐르는지 확인. 타이밍 방향성 도출</p>
+        <span class="step-tool">10년·1년 주기 분석</span>
+      </div>
+      <div class="step-box">
+        <div class="step-dot"></div>
+        <p class="step-num">STEP 03</p>
+        <p class="step-title">과거 이력 대입</p>
+        <p class="step-desc">충·형·합이 든 해와 실제 사건 매칭. 나만의 회로도 도출</p>
+        <span class="step-tool">라이프로그 맵 양식</span>
+      </div>
+      <div class="step-box">
+        <div class="step-dot"></div>
+        <p class="step-num">STEP 04</p>
+        <p class="step-title">AI 설계 요청</p>
+        <p class="step-desc">패턴+결핍+강점을 AI에 입력해 인생 2막 시나리오 3가지 도출</p>
+        <span class="step-tool">마이밍 프롬프트 팩</span>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="section">
+    <p class="section-label">커뮤니티 단계별 활동</p>
+    <div class="comm-grid">
+      <div class="comm-card ca">
+        <p class="comm-stage">PHASE 1 · 입문</p>
+        <p class="comm-title">처음 사용자</p>
+        <p class="comm-desc">기초 강의 수강, 자기 사주 공부, 자가진단 툴 체험. 댓글로 소통 시작</p>
+        <span class="comm-badge badge-a">무료 · 개방</span>
+      </div>
+      <div class="comm-card cb">
+        <p class="comm-stage">PHASE 2 · 성장</p>
+        <p class="comm-title">수익 창출 중</p>
+        <p class="comm-desc">사례글 업로드, 성공 패턴 공유. 마이밍 툴로 프리랜서·1인 서비스 운영</p>
+        <span class="comm-badge badge-b">멤버십</span>
+      </div>
+      <div class="comm-card cc">
+        <p class="comm-stage">PHASE 3 · 기여</p>
+        <p class="comm-title">사회 기여자</p>
+        <p class="comm-desc">공개 강의 참여, 마스터 양성, 오행 궁합으로 팀 구성. 생태계 순환 주도</p>
+        <span class="comm-badge badge-c">마스터 · 강사</span>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="section">
+    <p class="section-label">수익 구조</p>
+    <div class="revenue-grid">
+      <div class="rev-box">
+        <p class="rev-label">B2C — 개인 대상</p>
+        <div class="rev-item"><b>티어1</b> 기본 진단 리포트 판매</div>
+        <div class="rev-item"><b>티어2</b> 패턴 설계 패키지</div>
+        <div class="rev-item"><b>티어3</b> 1:1 멘토링 세션</div>
+        <div class="rev-item">유튜브 광고 수익 (강의 채널)</div>
+      </div>
+      <div class="rev-box">
+        <p class="rev-label">B2B · 플랫폼 — 전문가 대상</p>
+        <div class="rev-item"><b>툴 라이선스</b> 프롬프트 패키지 분양</div>
+        <div class="rev-item"><b>마스터 양성</b> 교육 과정 수강료</div>
+        <div class="rev-item"><b>중개 수수료</b> 마스터 상담 연결</div>
+        <div class="rev-item">공개강의 협찬·입장료</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p class="footer-mark">MAIMING · 마이밍</p>
+  </footer>
+
+</div>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.section').forEach(el => observer.observe(el));
+
+setTimeout(() => {
+  document.querySelectorAll('.section').forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight) el.classList.add('visible');
+  });
+}, 100);
+</script>
+</body>
+</html>
