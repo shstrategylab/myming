@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>마이밍(MY MING) — 운영자 이야기</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --color-bg: #FDFCF8;
+    --color-surface: #F7F5EF;
+    --color-text: #1C1A16;
+    --color-muted: #6B6759;
+    --color-faint: #A09C92;
+    --color-accent: #534AB7;
+    --color-accent-light: #EEEDFE;
+    --color-line: #E2DFD6;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+  }
+
+  /* 상단 장식선 */
+  .top-bar {
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--color-accent) 0%, #AFA9EC 50%, var(--color-accent-light) 100%);
+  }
+
+  .page {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 5rem 2rem 8rem;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 0.2s;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* 브랜드 */
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 4rem;
+  }
+  .brand-name {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    color: var(--color-accent);
+  }
+  .brand-divider {
+    flex: 1;
+    height: 0.5px;
+    background: var(--color-line);
+  }
+  .brand-sub {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--color-faint);
+  }
+
+  /* 헤드라인 */
+  .headline {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(26px, 5vw, 36px);
+    font-weight: 400;
+    line-height: 1.55;
+    color: var(--color-text);
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 0.5s;
+  }
+  .headline span {
+    display: block;
+    font-size: clamp(16px, 3vw, 20px);
+    font-weight: 300;
+    color: var(--color-muted);
+    margin-top: 0.5rem;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+
+  /* 본문 */
+  .body-text {
+    font-size: 16px;
+    line-height: 2;
+    color: var(--color-muted);
+    margin-bottom: 1.75rem;
+  }
+  .body-text strong {
+    color: var(--color-text);
+    font-weight: 500;
+  }
+
+  /* 인용구 */
+  .pull-quote {
+    border-left: 2px solid var(--color-accent);
+    padding: 0.75rem 0 0.75rem 1.5rem;
+    margin: 2.5rem 0;
+    font-family: 'Noto Serif KR', serif;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.85;
+    color: var(--color-text);
+    background: var(--color-accent-light);
+    border-radius: 0 8px 8px 0;
+    padding-right: 1.5rem;
+  }
+  .pull-quote strong {
+    font-weight: 500;
+  }
+
+  /* 구분선 */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 3rem 0;
+  }
+  .divider::before,
+  .divider::after {
+    content: '';
+    flex: 1;
+    height: 0.5px;
+    background: var(--color-line);
+  }
+  .divider-symbol {
+    font-size: 12px;
+    color: var(--color-accent);
+    letter-spacing: 0.2em;
+  }
+
+  /* 클로징 */
+  .closing {
+    font-size: 16px;
+    line-height: 2;
+    color: var(--color-muted);
+    margin-bottom: 1.75rem;
+  }
+  .closing strong {
+    color: var(--color-text);
+    font-weight: 500;
+  }
+
+  /* 서명 */
+  .sig {
+    margin-top: 3.5rem;
+    padding-top: 2rem;
+    border-top: 0.5px solid var(--color-line);
+  }
+  .sig-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--color-faint);
+    margin-bottom: 0.5rem;
+  }
+  .sig-name {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--color-text);
+  }
+  .sig-tagline {
+    font-size: 13px;
+    color: var(--color-accent);
+    margin-top: 4px;
+    letter-spacing: 0.05em;
+  }
+
+  /* 하단 여백 장식 */
+  .bottom-mark {
+    text-align: center;
+    margin-top: 5rem;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--color-faint);
+  }
+
+  @media (max-width: 600px) {
+    .page { padding: 3rem 1.25rem 5rem; }
+    .pull-quote { font-size: 15px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar"></div>
+
+<div class="page">
+
+  <div class="brand">
+    <span class="brand-name">MY MING · 마이밍</span>
+    <div class="brand-divider"></div>
+    <span class="brand-sub">운영자 이야기</span>
+  </div>
+
+  <h1 class="headline">
+    열심히 살았습니다.
+    <span>그런데 왜, 내가 원하던 삶이 아닐까요.</span>
+  </h1>
+
+  <p class="body-text">
+    저는 10대 때부터 꿈이 많았습니다. 만들고 싶은 것, 해보고 싶은 것이 넘쳤습니다.
+    그 에너지로 50년을 쉬지 않고 달렸습니다.
+    그런데 돌아보면 늘 이런 의구심이 따라다녔습니다.
+  </p>
+
+  <div class="pull-quote">
+    "풀리는 듯 안 풀리고, 내가 원하던 삶이 아닌데…<br>
+    나는 왜 이런 걸까."
+  </div>
+
+  <p class="body-text">
+    개인사도 복잡했고, 생각지 못한 일들도 많았습니다.
+    그 고민을 혼자 10년 가까이 껴안고 살았습니다.
+    심리학도 공부했고, 언어와 행동의 패턴도 파고들었습니다.
+    천부경을 만났고, 자기 객관화라는 개념을 붙잡았습니다.
+    무언가를 찾고 있다는 걸 알면서도, 그게 무엇인지는 몰랐습니다.
+  </p>
+
+  <div class="divider"><span class="divider-symbol">◇</span></div>
+
+  <p class="body-text">
+    그러다 우연히, 사주명리를 다시 들여다봤습니다.<br>
+    예전에 너무 어려워서 접어뒀던 공부였습니다.<br>
+    이번엔 AI에게 하나씩 물었습니다. 쉽게 설명해 줬습니다.<br>
+    질문이 꼬리를 물었고, 어느 순간 페이지가 쌓이기 시작했습니다.
+  </p>
+
+  <p class="body-text">그리고 알았습니다.</p>
+
+  <div class="pull-quote">
+    저는 아이디어(木)와 생각(水)은 넘쳤지만,<br>
+    그것을 세상 밖으로 꺼내는 불꽃(火)이 부족했습니다.<br>
+    그래서 늘 시작은 했지만 마무리가 흐지부지됐습니다.<br>
+    잘못 살아온 게 아니었습니다. <strong>타고난 기질이었습니다.</strong>
+  </div>
+
+  <p class="body-text">
+    스스로를 원망하던 마음이 조용해졌습니다.
+    처음으로 나 자신을 있는 그대로 바라볼 수 있었습니다.
+    그리고 그 부족한 불꽃을 AI로 채우기 시작했습니다.
+    메모로만 남아있던 10년의 생각들이 하나씩 세상 밖으로 나왔습니다.
+    지금, 20대보다 더 뜨거운 열정으로 살고 있습니다.
+  </p>
+
+  <div class="divider"><span class="divider-symbol">◇</span></div>
+
+  <p class="body-text">이 경험을 혼자 가지고 있기가 어려웠습니다.</p>
+
+  <p class="body-text">
+    40대부터 명퇴가 일상이 된 시대입니다.
+    재취업도 쉽지 않고, 유튜버로 살아남는 것도 만만치 않습니다.
+    그러면서도 사람들은 묻습니다. <strong>"나는 무엇을 잘할 수 있을까요?"</strong>
+  </p>
+
+  <p class="body-text">
+    저는 그 질문의 답이 이미 자기 안에 있다고 생각합니다.
+    다만 아직 꺼내지 못하고 있을 뿐입니다.
+    사주명리는 그 답을 꺼내는 거울이고,
+    AI는 그것을 현실로 만드는 도구입니다.
+  </p>
+
+  <div class="pull-quote">
+    돈만이 행복을 주지는 않습니다.<br>
+    하지만 최소한의 경제적 자유 없이는<br>
+    자신만의 삶을 살기도 쉽지 않습니다.<br><br>
+    <strong>그 두 가지를 함께 붙잡을 수 있다고 믿습니다.</strong>
+  </div>
+
+  <p class="closing">
+    마이밍은 그 믿음에서 시작했습니다.<br>
+    사주명리로 나를 객관적으로 이해하고,
+    AI를 파트너 삼아 자신만의 길을 설계하는 공간.<br>
+    함께 공부하고, 함께 만들고, 함께 살아가는 곳.<br><br>
+    처음은 누구나 작습니다.<br>
+    하지만 이 여정이 누군가에게 단 하나의 나침반이 된다면,<br>
+    그것으로 충분히 시작할 이유가 됩니다.
+  </p>
+
+  <p class="closing">
+    찾아와 주셔서 감사합니다.<br>
+    당신의 이야기도 듣고 싶습니다.
+  </p>
+
+  <div class="sig">
+    <p class="sig-label">MAIMING · 나의 命</p>
+    <p class="sig-name">마이밍 운영자</p>
+    <p class="sig-tagline">나의 命을 찾아가는 중, 함께</p>
+  </div>
+
+  <p class="bottom-mark">MY MING · 마이밍 · 나의 命</p>
+
+</div>
+
+</body>
+</html>

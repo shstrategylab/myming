@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>마이밍(MyMing) — 나의 命을 읽는 여정</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a18;
+    --ink-mid: #3d3d38;
+    --ink-soft: #6b6b62;
+    --ink-faint: #9a9a8e;
+    --paper: #f7f5ef;
+    --paper-warm: #f0ede3;
+    --paper-deep: #e8e4d8;
+    --accent: #2d6a4f;
+    --accent-light: #52b788;
+    --accent-pale: #d8f3dc;
+    --gold: #b5830a;
+    --gold-pale: #fdf3c8;
+    --border: rgba(26,26,24,0.12);
+    --serif: 'Noto Serif KR', serif;
+    --sans: 'Noto Sans KR', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.8;
+    font-size: 16px;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(247,245,239,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 0.5px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px;
+  }
+  .nav-brand {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.02em;
+  }
+  .nav-brand span { color: var(--accent); }
+  .nav-links {
+    display: flex; gap: 2rem; list-style: none;
+  }
+  .nav-links a {
+    font-size: 13px;
+    color: var(--ink-soft);
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    padding: 120px 2rem 80px;
+    max-width: 760px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .hero-eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(28px, 5vw, 46px);
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+  .hero-desc {
+    font-size: 17px;
+    color: var(--ink-mid);
+    line-height: 1.9;
+    max-width: 560px;
+    margin: 0 auto 2.5rem;
+  }
+  .hero-divider {
+    width: 40px; height: 1px;
+    background: var(--accent-light);
+    margin: 2rem auto;
+  }
+  .hero-sub {
+    font-size: 14px;
+    color: var(--ink-faint);
+    font-style: italic;
+    font-family: var(--serif);
+  }
+
+  /* CHAPTER NAV */
+  .chapter-nav {
+    background: var(--paper-warm);
+    border-top: 0.5px solid var(--border);
+    border-bottom: 0.5px solid var(--border);
+    padding: 1.25rem 2rem;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .chapter-nav a {
+    font-size: 13px;
+    color: var(--ink-soft);
+    text-decoration: none;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .chapter-nav a:hover {
+    background: var(--accent-pale);
+    color: var(--accent);
+  }
+
+  /* MAIN */
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 2rem 6rem;
+  }
+
+  /* CHAPTER */
+  .chapter {
+    padding: 5rem 0 4rem;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .chapter:last-child { border-bottom: none; }
+
+  .chapter-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+  .chapter-num {
+    font-family: var(--serif);
+    font-size: 48px;
+    font-weight: 300;
+    color: var(--accent-pale);
+    line-height: 1;
+    flex-shrink: 0;
+    border: 1px solid var(--accent-light);
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 20px;
+    color: var(--accent);
+  }
+  .chapter-title-wrap {}
+  .chapter-label {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 0.4rem;
+  }
+  .chapter-title {
+    font-family: var(--serif);
+    font-size: clamp(20px, 3vw, 26px);
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+
+  /* Q&A BLOCKS */
+  .qa-block {
+    margin-bottom: 3rem;
+  }
+  .question {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    margin-bottom: 1.25rem;
+  }
+  .q-mark {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .q-text {
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.6;
+  }
+  .answer {
+    padding-left: 2rem;
+    border-left: 2px solid var(--paper-deep);
+  }
+  .answer p {
+    font-size: 15.5px;
+    color: var(--ink-mid);
+    line-height: 1.9;
+    margin-bottom: 1rem;
+  }
+  .answer p:last-child { margin-bottom: 0; }
+  .answer strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  /* INSIGHT BOX */
+  .insight {
+    background: var(--paper-warm);
+    border: 0.5px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+  }
+  .insight-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+  .insight p {
+    font-size: 14.5px;
+    color: var(--ink-mid);
+    line-height: 1.85;
+  }
+
+  /* GOLD BOX */
+  .gold-box {
+    background: var(--gold-pale);
+    border: 0.5px solid rgba(181,131,10,0.25);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+  }
+  .gold-box p {
+    font-size: 14.5px;
+    color: #5a4200;
+    line-height: 1.85;
+  }
+
+  /* COMPARE TABLE */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 14px;
+  }
+  .compare-table th {
+    background: var(--paper-deep);
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-weight: 500;
+    color: var(--ink);
+    border: 0.5px solid var(--border);
+  }
+  .compare-table td {
+    padding: 0.75rem 1rem;
+    border: 0.5px solid var(--border);
+    color: var(--ink-mid);
+    vertical-align: top;
+    line-height: 1.7;
+  }
+  .compare-table tr:nth-child(even) td {
+    background: var(--paper-warm);
+  }
+
+  /* LIST */
+  .styled-list {
+    list-style: none;
+    margin: 1rem 0;
+  }
+  .styled-list li {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    font-size: 15px;
+    color: var(--ink-mid);
+    line-height: 1.8;
+    margin-bottom: 0.6rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .styled-list li:last-child { border-bottom: none; margin-bottom: 0; }
+  .list-dot {
+    width: 6px; height: 6px;
+    background: var(--accent-light);
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 10px;
+  }
+
+  /* STEP FLOW */
+  .step-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 1.5rem 0;
+  }
+  .step-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    position: relative;
+  }
+  .step-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 36px;
+    width: 1px;
+    height: calc(100% + 4px);
+    background: var(--border);
+  }
+  .step-num {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    font-weight: 500;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .step-content {
+    padding: 0.25rem 0 1.5rem;
+  }
+  .step-content strong {
+    display: block;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 0.3rem;
+  }
+  .step-content p {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.8;
+  }
+
+  /* MYMING CTA */
+  .myming-cta {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 12px;
+    padding: 3rem 2.5rem;
+    margin-top: 5rem;
+    text-align: center;
+  }
+  .myming-cta .cta-label {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--accent-light);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .myming-cta h2 {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+  .myming-cta p {
+    font-size: 14.5px;
+    color: rgba(247,245,239,0.65);
+    line-height: 1.9;
+    max-width: 480px;
+    margin: 0 auto 2rem;
+  }
+  .cta-btn {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    text-decoration: none;
+    padding: 0.8rem 2rem;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    transition: background 0.2s;
+  }
+  .cta-btn:hover { background: var(--accent-light); }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 3rem 2rem;
+    border-top: 0.5px solid var(--border);
+    font-size: 13px;
+    color: var(--ink-faint);
+    line-height: 2;
+  }
+  footer strong { color: var(--ink-soft); font-weight: 500; }
+
+  /* QUOTE */
+  blockquote {
+    font-family: var(--serif);
+    font-size: 17px;
+    font-style: italic;
+    color: var(--ink-mid);
+    line-height: 1.85;
+    padding: 1.5rem 2rem;
+    border-left: 3px solid var(--accent-light);
+    background: var(--paper-warm);
+    border-radius: 0 8px 8px 0;
+    margin: 1.5rem 0;
+  }
+
+  @media (max-width: 600px) {
+    nav { padding: 0 1rem; }
+    .nav-links { display: none; }
+    main { padding: 0 1.25rem 4rem; }
+    .hero { padding: 90px 1.25rem 60px; }
+    .chapter-nav { padding: 1rem; }
+    .chapter { padding: 3.5rem 0 3rem; }
+    .myming-cta { padding: 2rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">마이밍<span>.</span></div>
+  <ul class="nav-links">
+    <li><a href="#q1">사주란</a></li>
+    <li><a href="#q2">왜 안 가르치나</a></li>
+    <li><a href="#q3">과학과 사주</a></li>
+    <li><a href="#q4">누가 만들었나</a></li>
+    <li><a href="#q5">왜 잘 맞나</a></li>
+    <li><a href="#q6">어떻게 쓸까</a></li>
+    <li><a href="#q7">마이밍 이야기</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow">마이밍(My命) — 나의 운명을 읽는 여정</div>
+  <h1>열심히 살았는데<br>왜 <em>뜻대로 안 풀릴까?</em></h1>
+  <div class="hero-divider"></div>
+  <p class="hero-desc">
+    사주명리가 뭔지 몰라도 괜찮습니다.<br>
+    누구나 한 번쯤 품어본 상식적인 궁금증에서 시작합니다.<br>
+    그 궁금증을 따라가다 보면, 자연스럽게 나 자신이 보입니다.
+  </p>
+  <div class="hero-sub">이 페이지는 마이밍을 만든 사람이 실제로 사주명리를 공부하며<br>스스로에게 던졌던 질문들입니다.</div>
+</div>
+
+<div class="chapter-nav">
+  <a href="#q1">① 사주명리란?</a>
+  <a href="#q2">② 왜 학교에서 안 가르쳐?</a>
+  <a href="#q3">③ 공인된 자기 탐색 도구가 있어?</a>
+  <a href="#q4">④ 사주 역사와 과학적 근거</a>
+  <a href="#q5">⑤ 왜 잘 맞는 거야?</a>
+  <a href="#q6">⑥ AI 시대에 어떻게 활용하나?</a>
+  <a href="#q7">⑦ 마이밍은 어떻게 시작됐나?</a>
+</div>
+
+<main>
+
+  <!-- CHAPTER 1 -->
+  <section class="chapter" id="q1">
+    <div class="chapter-header">
+      <div class="chapter-num">1</div>
+      <div class="chapter-title-wrap">
+        <div class="chapter-label">첫 번째 궁금증</div>
+        <h2 class="chapter-title">사주명리? 사주는 뭐고 명리는 뭐야?</h2>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="question">
+        <span class="q-mark">Q.</span>
+        <span class="q-text">사주(四柱)와 명리(命理)는 어떻게 다른가요?</span>
+      </div>
+      <div class="answer">
+        <p>
+          <strong>사주(四柱)</strong>는 태어난 연·월·일·시의 네 기둥을 뜻합니다. 각 기둥은 하늘의 기운인 천간(天干)과 땅의 기운인 지지(地支)로 이루어져 총 여덟 글자 — <strong>사주팔자(四柱八字)</strong>가 됩니다. 이것이 분석의 대상, 즉 데이터입니다.
+        </p>
+        <p>
+          <strong>명리(命理)</strong>학은 이 여덟 글자를 음양오행 이론에 대입하여 운명의 흐름과 삶의 소명을 해석하는 동양 전통 학문입니다. 단순히 정해진 길흉을 보는 것을 넘어, 자연의 이치에 따라 사람이 어떻게 살아가야 하는지 지침을 제공합니다.
+        </p>
+        <div class="insight">
+          <div class="insight-label">핵심 비유</div>
+          <p>사주가 인생의 <strong>'지도'</strong>라면, 명리학은 그 지도를 읽고 분석하여 어디로 갈지 조언해 주는 <strong>'나침반'</strong>입니다. 미신이라기보다 동양의 오랜 통계학적·철학적 세계관에 기반한 삶의 해석 도구입니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="question">
+        <span class="q-mark">Q.</span>
+        <span class="q-text">명리학의 핵심 구성 요소는 무엇인가요?</span>
+      </div>
+      <div class="answer">
+        <ul class="styled-list">
+          <li><span class="list-dot"></span><span><strong>60갑자</strong> — 천간 10개 × 지지 12개의 조합으로 만들어지는 60가지 순환 주기</span></li>
+          <li><span class="list-dot"></span><span><strong>음양오행(목·화·토·금·수)</strong> — 만물의 기운을 다섯 가지로 분류한 에너지 체계</span></li>
+          <li><span class="list-dot"></span><span><strong>생극제화(生剋制化)</strong> — 오행이 서로 돕고 제약하는 관계의 원리</span></li>
+          <li><span class="list-dot"></span><span><strong>십성(十星)</strong> — 일간을 기준으로 나머지 글자의 역할(재성·관성·인성 등)을 정의한 체계</span></li>
+          <li><span class="list-dot"></span><span><strong>대운·세운</strong> — 10년, 1년 단위로 흘러가는 운의 흐름</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHAPTER 2 -->
+  <section class="chapter" id="q2">
+    <div class="chapter-header">
+      <div class="chapter-num">2</div>
+      <div class="chapter-title-wrap">
+        <div class="chapter-label">두 번째 궁금증</div>
+        <h2 class="chapter-title">사주명리를 알면 인생이 달리 보인다는데,<br>왜 학교에선 안 가르칠까?</h2>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="question">
+        <span class="q-mark">Q.</span>
+        <span class="q-text">공교육에서 사주명리를 가르치지 않는 이유가 뭔가요?</span>
+      </div>
+      <div class="answer">
+        <p>공교육이 추구하는 보편성·객관성·종교적 중립성의 기준에 부합하지 않기 때문입니다. 구체적으로는 네 가지 이유가 있습니다.</p>
+        <ul class="styled-list">
+          <li><span class="list-dot"></span><span><strong>과학적 검증의 부재</strong> — 통계적·과학적 근거를 명확히 증명하기 어렵습니다.</span></li>
+          <li><span class="list-dot"></span><span><strong>해석의 주관성과 비일관성</strong> — 해석하는 사람의 관점과 역량에 따라 결과가 크게 달라질 수 있어 표준화된 교과서를 만들기 어렵습니다.</span></li>
+          <li><span class="list-dot"></span><span><strong>결정론적 사고와의 충돌</strong> — '사주대로 산다'는 숙명론적 시각은 학생의 무한한 가능성을 강조하는 현대 교육 이념과 맞지 않습니다.</span></li>
+          <li><span class="list-dot"></span><span><strong>종교 및 미신 논란</strong> — 도교·음양오행설 등 동양 철학에 깊이 뿌리를 두고 있어 종교적 중립성 논란이 생길 수 있습니다.</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="question">
+        <span class="q-mark">Q.</span>
+        <span class="q-text">그럼에도 사주명리를 알면 인생이 달리 보인다는 건 왜일까요?</span>
+      </div>
+      <div class="answer">
+        <p>사주명리를 긍정적으로 활용하는 사람들은 이를 단순한 점술이 아닌 <strong>'자아 성찰을 위한 도구'</strong>이자 <strong>'동양적 심리학'</strong>으로 접근합니다.</p>
+        <ul class="styled-list">
+          <li><span class="list-dot"></span><span><strong>나만의 고유성 인정</strong> — MBTI처럼 타고난 기질과 장단점을 객관적으로 바라보게 합니다.</span></li>
+          <li><span class="list-dot"></span><span><strong>삶의 굴곡에 대한 유연성</strong> — '운의 흐름'이라는 개념을 통해 인생의 전성기와 암흑기를 이해하고, 힘든 시기를 버텨낼 마음의 여유를 얻습니다.</span></li>
+          <li><span class="list-dot"></span><span><strong>타인에 대한 이해와 포용</strong> — 나와 다른 기질을 가진 타인의 행동을 비난하기보다 자연스러운 다름으로 인정하게 됩니다.</span></li>
+        </ul>
+        <div class="insight">
+          <div class="insight-label">마이밍의 관점</div>
+          <p>사주명리는 정규 교육과정에는 없지만, 최근 평생교육원이나 대학원(동양학과 등)의 학문적 영역에서 활발히 연구되고 있습니다. <strong>맹신하기보다는 나를 돌아보는 인문학적 거울</strong>로 가볍게 활용하는 것이 가장 건강한 접근입니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHAPTER 3 -->
+  <section class="chapter" id="q3">
+    <div class="chapter-header">
+      <div class="chapter-num">3</div>
+      <div class="chapter-title-wrap">
+        <div class="chapter-label">세 번째 궁금증</div>
+        <h2 class="chapter-title">공인된 자기 탐색 도구가 따로 있나?<br>사주명리와 어떻게 다를까?</h2>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="question">
+        <span class="q-mark">Q.</span>
+        <span class="q-text">심리학에서 공인된 자기 탐색 도구에는 무엇이 있나요?</span>
+      </div>
+      <div class="answer">
+        <p>공인된 심리검사는 피검사자의 실제 생각·행동 패턴·가치관을 과학적으로 측정합니다. 대표적인 네 가지는 다음과 같습니다.</p>
+        <table class="compare-table">
+          <thead>
+            <tr><th>도구</th><th>특징</th><th>주요 활용</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>MMPI</strong></td><td>미네소타 다면적 인성검사. 가장 널리 쓰이는 객관적 성격·정신건강 검사</td><td>병원·상담 센터 필수 도구</td></tr>
+            <tr><td><strong>TCI</strong></td><td>타고난 생물학적 기질과 환경 속 성격을 분리 측정</td><td>"내가 타고난 기질"을 과학적으로 알고 싶을 때</td></tr>
+            <tr><td><strong>Holland</strong></td><td>RIASEC 6각형 모델로 흥미와 직업 적성 탐색</td><td>고용노동부 워크넷 표준 사용</td></tr>
+            <tr><td><strong>NEO-PI-R (Big 5)</strong></td><td>외향성·신경증·개방성·성실성·우호성 5대 특성 측정</td><td>학계 표준, MBTI보다 타당도 높음</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="question">
+        <span class="q-mark">Q.</span>
+        <span class="q-text">공인 심리검사와 사주명리, 어떻게 다른 건가요?</span>
+      </div>
+      <div class="answer">
+        <table class="compare-table">
+          <thead>
+            <tr><th>구분</th><th>공인 심리검사</th><th>사주명리</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>기반</strong></td><td>심리학 이론 및 대규모 통계 데이터</td><td>동양 철학적 유추 및 수천 년 임상 경험</td></tr>
+            <tr><td><strong>해석</strong></td><td>자격을 갖춘 전문가의 종합적 해석 필수</td><td>비전문가도 대략적 해석 가능</td></tr>
+            <tr><td><strong>목적</strong></td><td>정확한 자기 이해 및 심리적 문제 진단</td><td>기질 파악, 운의 흐름 분석, 타이밍 조언</td></tr>
+            <tr><td><strong>강점</strong></td><td>'지금 나'의 상태를 수치로 정밀 측정</td><td>'언제 어떻게 움직여야 하는가' 타이밍 제시</td></tr>
+          </tbody>
+        </table>
+        <div class="gold-box">
+          <p>과학적 심리검사는 "지금 당신의 불안 수치가 높습니다"라는 건조한 수치를 줍니다. 사주명리는 "당신은 큰 물(水)로 태어났는데 주변에 불(火)이 너무 강해 증발할 위기이니, 흙(土)으로 둑을 쌓아야 삽니다"라는 식으로 삶 전체를 하나의 서사로 해석합니다. 어느 쪽이 더 나은 것이 아니라, <strong>목적에 따라 서로 다른 도구</strong>입니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHAPTER 4 -->
+  <section class="chapter" id="q4">
+    <div class="chapter-header">
+      <div class="chapter-num">4</div>
+      <div class="chapter-title-wrap">
+        <div class="chapter-label">네 번째 궁금증</div>
+        <h2 class="chapter-title">사주명리는 누가 만들었고,<br>현대 진단 도구보다 역사가 짧은 건 아닐까?</h2>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="question">
+        <span class="q-mark">Q.</span>
+        <span class="q-text">사주명리는 누가, 언제 만들었나요?</span>
+      </div>
+      <div class="answer">
+        <p>사주명리는 특정 한 개인이 만든 것이 아니라 <strong>수천 년에 걸쳐 여러 학자들의 이론이 누적되고 다듬어지며 완성된 거대한 통계적 경험 철학</strong>입니다.</p>
+        <div class="step-flow">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <strong>춘추전국시대 (기원전) — 음양오행설의 뿌리</strong>
+              <p>기원전 중국에서 만물의 기운을 목·화·토·금·수 다섯 가지로 분류하는 음양오행설이 탄생합니다.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <strong>이허중 (당나라, 8세기) — 당사주의 기틀</strong>
+              <p>태어난 '연(年)'을 기준으로 운명을 보는 체계를 확립했습니다.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <strong>서자평 (송나라, 10~11세기) — 사주팔자 체계 완성</strong>
+              <p>태어난 '일(日)'을 자아(나)로 삼고 시간까지 포함하는 진정한 의미의 사주팔자 체계를 완성했습니다. 그의 호를 따 <strong>'자평명리학'</strong>이라 부릅니다.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <strong>심효첨 (청나라, 18세기) — 명리학의 바이블</strong>
+              <p>『자평진전』을 저술하여 격국과 용신의 개념을 가장 논리적이고 완벽하게 정리했습니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="question">
+        <span class="q-mark">Q.</span>
+        <span class="q-text">그럼 수천 년의 역사를 가진 사주가 현대 과학 검사보다 못할 게 뭔가요?</span>
+      </div>
+      <div class="answer">
+        <p>매우 합리적인 의문입니다. 학계가 두 도구를 다르게 대하는 기준은 <strong>'시간의 길이'가 아니라 '검증의 방식'</strong>에 있습니다.</p>
+        <table class="compare-table">
+          <thead>
+            <tr><th>구분</th><th>사주명리학</th><th>현대 공인 진단 도구</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>데이터 추출</strong></td><td>생년월일시 (태어난 시간의 우주적 기운)</td><td>피검자의 현재 생각과 행동에 대한 응답</td></tr>
+            <tr><td><strong>타당도 검증</strong></td><td>문헌적 전승 및 술사의 임상 경험 (주관적)</td><td>무작위 대조군 중심의 통계적 표준화 (객관적)</td></tr>
+            <tr><td><strong>반증 가능성</strong></td><td>틀렸을 때 "해석이 잘못됐다"며 이론 자체는 보호됨</td><td>데이터가 가설과 다르면 이론 자체가 수정·폐기됨</td></tr>
+            <tr><td><strong>해석 일관성</strong></td><td>학파와 실력에 따라 정반대 해석 가능</td><td>매뉴얼화되어 누가 검사해도 동일한 결과 도출</td></tr>
+          </tbody>
+        </table>
+        <div class="insight">
+          <div class="insight-label">중요한 맥락</div>
+          <p>사주명리가 정규 교육에 포함되지 못하는 건 배척당해서가 아닙니다. <strong>학문의 성격 자체가 다르기 때문</strong>입니다. 서양식 진단 도구가 '현재 나의 상태'를 실증적으로 측정한다면, 사주명리는 '태어난 시간의 기운'을 통해 삶을 유추하는 상징적·해석적 인문학입니다. 어느 쪽이 더 낫다는 것이 아니라, 서로 다른 질문에 답하는 도구입니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHAPTER 5 -->
+  <section class="chapter" id="q5">
+    <div class="chapter-header">
+      <div class="chapter-num">5</div>
+      <div class="chapter-title-wrap">
+        <div class="chapter-label">다섯 번째 궁금증</div>
+        <h2 class="chapter-title">정치인부터 기업 오너까지 사주를 보는데,<br>이유가 뭘까? 왜 그렇게 잘 맞는 걸까?</h2>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="question">
+        <span class="q-mark">Q.</span>
+        <span class="q-text">성공한 사람들이 사주를 신뢰하는 이유가 있나요?</span>
+      </div>
+      <div class="answer">
+        <p>실제로 많은 최고 결정권자들이 중요한 판단을 앞두고 사주명리나 풍수를 참고하는 것은 공공연한 사실입니다. 이유가 있습니다.</p>
+        <ul class="styled-list">
+          <li><span class="list-dot"></span><span><strong>과학이 답 못 하는 '때(時)'의 문제</strong> — 심리검사는 '내가 어떤 사람인가'는 잘 짚어내지만, <strong>'언제 움직여야 하는가'</strong>에 대한 답은 주지 못합니다. 사주의 대운·세운은 최적의 타이밍을 읽는 도구입니다.</span></li>
+          <li><span class="list-dot"></span><span><strong>리스크 관리와 불안 해소</strong> — 최고의 자리에 있을수록 미래에 대한 불안감이 극대화됩니다. 사주명리는 이를 완화해 주는 심리적 지지대 역할을 합니다.</span></li>
+          <li><span class="list-dot"></span><span><strong>인사(人事)와 궁합의 직관성</strong> — 핵심 임원을 임명할 때 기질적 조화를 사주로 직관적으로 확인합니다.</span></li>
+        </ul>
+        <blockquote>
+          성공한 이들이 사주를 보는 진짜 이유는 사주가 100% 맞기 때문이 아닙니다.<br>
+          "자신의 선택에 확신을 더하고 최악의 시나리오를 대비하기 위한 전략적 도구"로 활용하기 때문입니다.
+        </blockquote>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="question">
+        <span class="q-mark">Q.</span>
+        <span class="q-text">대한민국에서는 실제로 사주가 현대 진단 도구보다 더 많이 쓰이나요?</span>
+      </div>
+      <div class="answer">
+        <p>대중적 소비량과 심리적 의존도 면에서는 사주명리가 현대 과학적 진단 도구를 압도합니다.</p>
+        <div class="gold-box">
+          <p>국내 사주·타로 등 점술 시장 규모는 연간 약 <strong>1조 4,000억 원</strong>으로 추산됩니다. 이는 웬만한 전문 심리상담 시장을 훌쩍 뛰어넘습니다. 대한민국 태극기에는 음양과 주역 4괘가 담겨 있고, 한의학은 음양오행 원리에 기반합니다. 사주명리는 한국인의 정서 깊숙이 자리 잡고 있습니다.</p>
+        </div>
+        <p>현대인은 정신과나 심리상담센터를 찾는 것에 거부감이나 기록에 대한 불안을 가집니다. 반면 철학관이나 사주 앱은 '문화적 친숙함' 덕분에 삶이 흔들릴 때 가장 먼저 찾는 <strong>한국 특유의 1차 심리 방어선</strong> 역할을 합니다.</p>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="question">
+        <span class="q-mark">Q.</span>
+        <span class="q-text">사주풀이가 놀라울 정도로 정확하게 맞는 이유가 뭔가요?</span>
+      </div>
+      <div class="answer">
+        <p>십성·지장간·합충형파해·대운·세운으로 이어지는 풀이가 신기하리만치 잘 맞는 데에는 <strong>고도의 구조적 상징 체계</strong>가 있습니다.</p>
+        <p>서양 분석심리학의 거장 칼 융이 주장한 <strong>'동시성 이론(Synchronicity)'</strong>과도 맥이 닿습니다. 융 역시 주역과 동양 사상을 깊이 연구하며, 태어난 시간과 우주적 기운의 연결성을 심리학적으로 설명하려 했습니다.</p>
+        <div class="insight">
+          <div class="insight-label">서사의 힘</div>
+          <p>현대 심리검사는 "당신은 불안 수치가 높습니다"라는 건조한 수치를 줍니다. 잘 보는 역학자는 "당신은 큰 물(水)로 태어났는데 주변에 불(火)이 너무 강해 증발할 위기이니, 흙(土)으로 둑을 쌓아야 산다"는 식으로 내 인생을 한 편의 서사시로 풀어냅니다. 이 방식이 인간의 뇌에 훨씬 더 깊은 카타르시스와 적중감을 줍니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHAPTER 6 -->
+  <section class="chapter" id="q6">
+    <div class="chapter-header">
+      <div class="chapter-num">6</div>
+      <div class="chapter-title-wrap">
+        <div class="chapter-label">여섯 번째 궁금증</div>
+        <h2 class="chapter-title">AI 시대, 100세 시대에<br>사주명리를 어떻게 활용할 수 있을까?</h2>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="question">
+        <span class="q-mark">Q.</span>
+        <span class="q-text">사주명리와 AI를 결합하면 어떤 가능성이 생기나요?</span>
+      </div>
+      <div class="answer">
+        <p>사주명리의 최대 약점 중 하나는 '동일 사주(쌍둥이 사주)'의 문제입니다. 같은 시간에 태어난 사람도 전혀 다른 삶을 삽니다. 이 한계를 극복하는 방법이 바로 <strong>개인의 과거 데이터를 대입하는 것</strong>입니다.</p>
+        <ul class="styled-list">
+          <li><span class="list-dot"></span><span><strong>과거 패턴 매핑</strong> — 사주의 대운·세운 위에 실제로 겪었던 사건들을 대입해 나만의 인생 알고리즘을 도출합니다.</span></li>
+          <li><span class="list-dot"></span><span><strong>결핍 오행의 현대적 치환</strong> — 부족한 기운을 현대의 역량과 환경으로 보완하는 행동 지침으로 전환합니다.</span></li>
+          <li><span class="list-dot"></span><span><strong>AI를 통한 실행력 확보</strong> — 사주가 방향을 알려주면 AI가 실제로 만들고 실행하는 힘을 줍니다.</span></li>
+          <li><span class="list-dot"></span><span><strong>운의 타이밍 전술화</strong> — 식상운에는 대외 활동을, 인성운에는 내실 강화를 — 운의 흐름에 최적화된 연간 전술을 수립합니다.</span></li>
+        </ul>
+        <div class="insight">
+          <div class="insight-label">핵심 통찰</div>
+          <p>사주명리는 <strong>'언제, 어떤 방향으로 움직여야 하는가'</strong>를 알려주고, AI는 그 방향으로 <strong>실제로 만들고 실행하는 힘</strong>을 줍니다. 둘을 함께 쓰면 기질의 한계를 기술로 보완할 수 있습니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="question">
+        <span class="q-mark">Q.</span>
+        <span class="q-text">100세 시대에 왜 제2의 인생 설계가 반드시 필요한가요?</span>
+      </div>
+      <div class="answer">
+        <p>만 40세부터 명예퇴직이 일상화되고, 재취업도 만만치 않은 시대입니다. 유튜브로 생계를 이어가는 사람들이 늘어난 세상에서, <strong>자신이 쌓아온 지식·경험·지혜를 새로운 수익과 의미로 전환하는 것</strong>은 선택이 아닌 필수가 되었습니다.</p>
+        <p>이때 가장 먼저 필요한 것이 <strong>자기 객관화</strong>입니다. 나 자신을 이해하지 못하면 아무리 좋은 도구가 있어도 제대로 활용할 수 없습니다. 사주명리는 이 자기 객관화의 출발점입니다.</p>
+        <div class="gold-box">
+          <p>돈만이 행복을 주는 건 아닙니다. 그렇다고 돈 없이는 행복한 삶을 살기도 힘듭니다. <strong>최소한의 경제적 자유를 지키며 자아를 실현하는 것</strong> — 마이밍이 궁극적으로 지향하는 방향입니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHAPTER 7 -->
+  <section class="chapter" id="q7">
+    <div class="chapter-header">
+      <div class="chapter-num">7</div>
+      <div class="chapter-title-wrap">
+        <div class="chapter-label">마이밍 이야기</div>
+        <h2 class="chapter-title">마이밍은 어떻게 시작됐나?</h2>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="question">
+        <span class="q-mark">Q.</span>
+        <span class="q-text">마이밍을 만든 사람은 누구인가요?</span>
+      </div>
+      <div class="answer">
+        <p>10대부터 꿈꿔온 일들이 풀리는 듯 안 풀리고, 생각처럼 원하던 삶이 아닌 것 같다는 의구심을 품으며 살아온 50대입니다. 개인사를 비롯한 복잡한 일들이 겹치면서 <strong>'내 삶은 왜 이런 걸까'</strong>라는 고민을 10년 가까이 해왔습니다.</p>
+        <p>그 과정에서 천부경 공부, 자기 객관화, 언행심리 마스터와의 대화 등 다양한 방법을 시도했습니다. 그러다 우연히 AI에게 사주명리 기초부터 하나하나 질문하기 시작했습니다.</p>
+        <blockquote>
+          "너무 쉽게 설명해 주더라고요. 그 질문들을 모아 AI에게 정리해 달라고 했더니, 매일 반복해 공부할 수 있게 HTML 페이지를 만들어 줬습니다. 하나씩 쌓으면서 공부하다 보니 자연스럽게 사주풀이 프롬프트에서 진단 도구들도 여러 개 만들게 됐습니다."
+        </blockquote>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="question">
+        <span class="q-mark">Q.</span>
+        <span class="q-text">화(火) 기운이 부족하다는 게 어떤 의미인가요? AI로 어떻게 극복했나요?</span>
+      </div>
+      <div class="answer">
+        <p>사주명리학에서 화(火)는 '발산', '팽창', '결과의 가시화'를 의미합니다. <strong>화 기운이 부족하면 아이디어(목, 木)와 깊은 생각(수, 水)은 넘쳐나는데, 이를 세상 밖으로 꺼내놓는 추진력과 마무리 에너지가 약해져</strong> 좋은 아이디어들이 메모로만 남게 됩니다.</p>
+        <p>50년을 살아오며 만들고 싶은 것, 하고 싶은 것은 항상 많았지만 결과가 흐지부지되거나 마무리가 안 되는 경우가 반복됐습니다. 그 이유를 사주를 통해 이해했을 때 <strong>자책이 아닌 객관화</strong>가 가능해졌습니다.</p>
+        <div class="insight">
+          <div class="insight-label">AI와의 만남</div>
+          <p>그 부족한 화(火)의 실행과 시각화 영역을 AI라는 무한한 엔진을 통해 보완하게 됐습니다. 오랫동안 메모로만 쌓아두었던 생각들이 AI와의 대화를 통해 실시간으로 만들어지기 시작하자, <strong>20대보다 더 강한 삶의 열정</strong>을 다시 찾게 됐습니다. 살아온 경험과 콘텐츠가 많아질수록 더욱 그러합니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="question">
+        <span class="q-mark">Q.</span>
+        <span class="q-text">마이밍이 궁극적으로 만들고 싶은 건 무엇인가요?</span>
+      </div>
+      <div class="answer">
+        <p>마이밍과 같은 사람이 매우 많을 것이라고 생각했습니다. 최근 40대부터 명퇴하는 시대, 재취업도 만만치 않은 세상에서 — <strong>그동안 쌓아온 지식과 경험과 지혜를 가지고 새로운 시대를 열 수 있도록</strong> 돕고 싶었습니다.</p>
+        <ul class="styled-list">
+          <li><span class="list-dot"></span><span>사주명리 기초 강의를 통해 누구나 스스로 풀이할 수 있는 기반 제공</span></li>
+          <li><span class="list-dot"></span><span>마이밍(MyMing) 사주 진단 서비스로 개인의 기질과 타이밍 분석</span></li>
+          <li><span class="list-dot"></span><span>자기 객관화를 거쳐 AI를 활용해 자신만의 서비스와 수익을 만드는 경제 생태계 구축</span></li>
+        </ul>
+        <div class="gold-box">
+          <p><strong>반드시 거쳐야 할 과정이 자기 객관화입니다.</strong> 이것이 안 되면 절대로 행복한 삶을 살 수 없다는 걸 깨달았습니다. 마이밍은 그 자기 객관화의 출발점이자, 제2의 인생을 설계하는 플랫폼이 되고자 합니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="myming-cta">
+    <div class="cta-label">지금 시작하기</div>
+    <h2>나의 命을 읽는 여정,<br>마이밍과 함께</h2>
+    <p>
+      사주명리를 처음 접하는 분도 괜찮습니다.<br>
+      궁금증에서 시작해 자기 객관화로, 그리고 제2의 인생 설계로 이어지는 여정입니다.
+    </p>
+    <a href="https://shstrategylab.github.io/lab/saju_lecture.html" class="cta-btn" target="_blank">사주명리 독학 가이드 시작하기 →</a>
+  </div>
+
+</main>
+
+<footer>
+  <strong>마이밍(MyMing)</strong> — 나의 命<br>
+  사주명리는 미래를 맞추는 점술이 아닙니다. 나를 이해하고, 타인을 이해하고, 운의 흐름을 읽는 인생 설계의 나침반입니다.<br><br>
+  사주명리 공부: <a href="https://shstrategylab.github.io/lab/saju_lecture.html" style="color: var(--accent-light); text-decoration: none;">독학 가이드</a> &nbsp;·&nbsp;
+  <a href="https://shstrategylab.github.io/lab/self_diagnosis.html" style="color: var(--accent-light); text-decoration: none;">자가진단</a> &nbsp;·&nbsp;
+  <a href="https://shstrategylab.github.io/lab/yinyang_fivemov.html" style="color: var(--accent-light); text-decoration: none;">음양오행</a>
+</footer>
+
+</body>
+</html>
