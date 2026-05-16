@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>마이밍 — 나의 命</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C9A96E;
+  --gold-light: #E8D5B0;
+  --gold-dark: #8B6914;
+  --ink: #1A1614;
+  --ink-soft: #3D3530;
+  --paper: #FAF7F2;
+  --paper-warm: #F2EDE3;
+  --divider: rgba(201,169,110,0.25);
+  --serif: 'Noto Serif KR', serif;
+  --sans: 'Noto Sans KR', sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-weight: 300;
+  line-height: 1.8;
+  overflow-x: hidden;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.25rem 3rem;
+  background: rgba(250,247,242,0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 0.5px solid var(--divider);
+}
+.nav-logo {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--gold-dark);
+  letter-spacing: 0.05em;
+}
+.nav-logo span { color: var(--ink-soft); font-weight: 300; font-size: 0.85rem; margin-left: 6px; }
+.nav-links { display: flex; gap: 2rem; }
+.nav-links a {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  text-decoration: none;
+  letter-spacing: 0.03em;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--gold-dark); }
+.nav-cta {
+  font-size: 0.8rem;
+  padding: 0.5rem 1.25rem;
+  border: 1px solid var(--gold);
+  color: var(--gold-dark);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  transition: all 0.2s;
+}
+.nav-cta:hover { background: var(--gold); color: white; }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center;
+  padding: 8rem 2rem 4rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '命';
+  position: absolute;
+  font-family: var(--serif);
+  font-size: 40vw;
+  color: rgba(201,169,110,0.06);
+  line-height: 1;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  user-select: none;
+}
+.hero-eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+  animation: fadeUp 0.8s ease both;
+}
+.hero-title {
+  font-family: var(--serif);
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 300;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin-bottom: 1rem;
+  animation: fadeUp 0.8s 0.15s ease both;
+}
+.hero-title em {
+  font-style: normal;
+  color: var(--gold-dark);
+  font-weight: 600;
+}
+.hero-sub {
+  font-size: 1rem;
+  color: var(--ink-soft);
+  max-width: 480px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.9;
+  animation: fadeUp 0.8s 0.3s ease both;
+}
+.hero-btns {
+  display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+  animation: fadeUp 0.8s 0.45s ease both;
+}
+.btn-primary {
+  padding: 0.875rem 2rem;
+  background: var(--gold-dark);
+  color: var(--paper);
+  text-decoration: none;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  transition: all 0.2s;
+  border: none; cursor: pointer;
+}
+.btn-primary:hover { background: var(--gold); }
+.btn-outline {
+  padding: 0.875rem 2rem;
+  border: 1px solid var(--ink-soft);
+  color: var(--ink-soft);
+  text-decoration: none;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  transition: all 0.2s;
+  background: transparent; cursor: pointer;
+}
+.btn-outline:hover { border-color: var(--gold); color: var(--gold-dark); }
+.scroll-hint {
+  position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+  font-size: 0.75rem; color: var(--gold); letter-spacing: 0.15em;
+  animation: pulse 2s infinite;
+}
+
+/* SECTIONS */
+section { padding: 6rem 2rem; }
+.container { max-width: 960px; margin: 0 auto; }
+.section-eyebrow {
+  font-size: 0.7rem; letter-spacing: 0.2em;
+  color: var(--gold); margin-bottom: 0.75rem; display: block;
+}
+.section-title {
+  font-family: var(--serif);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 300; line-height: 1.4;
+  color: var(--ink); margin-bottom: 1rem;
+}
+.section-title em { font-style: normal; color: var(--gold-dark); font-weight: 600; }
+.section-sub {
+  font-size: 0.95rem; color: var(--ink-soft);
+  max-width: 540px; line-height: 1.9; margin-bottom: 3rem;
+}
+.divider-line {
+  width: 48px; height: 1px;
+  background: var(--gold); margin: 1.5rem 0;
+}
+
+/* FREE SERVICES */
+.free-section { background: var(--paper-warm); }
+.free-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+.free-card {
+  background: var(--paper);
+  border: 0.5px solid var(--divider);
+  padding: 2rem;
+  transition: border-color 0.2s;
+}
+.free-card:hover { border-color: var(--gold); }
+.free-card-icon {
+  font-family: var(--serif);
+  font-size: 2rem;
+  color: var(--gold);
+  margin-bottom: 1rem;
+}
+.free-card-title {
+  font-family: var(--serif);
+  font-size: 1.1rem; font-weight: 600;
+  color: var(--ink); margin-bottom: 0.5rem;
+}
+.free-card-body { font-size: 0.875rem; color: var(--ink-soft); line-height: 1.8; }
+.free-badge {
+  display: inline-block; margin-top: 1rem;
+  font-size: 0.7rem; letter-spacing: 0.1em;
+  padding: 0.25rem 0.75rem;
+  border: 1px solid var(--gold-light);
+  color: var(--gold-dark);
+}
+.free-cta-wrap { margin-top: 3rem; text-align: center; }
+.free-cta-note { font-size: 0.85rem; color: var(--ink-soft); margin-top: 1rem; }
+
+/* HOW */
+.how-list { counter-reset: step; }
+.how-item {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 1.5rem;
+  padding: 2rem 0;
+  border-bottom: 0.5px solid var(--divider);
+  align-items: start;
+}
+.how-item:last-child { border-bottom: none; }
+.how-num {
+  font-family: var(--serif);
+  font-size: 2.5rem; font-weight: 300;
+  color: var(--gold-light); line-height: 1;
+  text-align: right;
+}
+.how-content-title {
+  font-family: var(--serif);
+  font-size: 1.1rem; font-weight: 600;
+  color: var(--ink); margin-bottom: 0.5rem;
+  display: flex; align-items: center; gap: 0.75rem;
+}
+.how-badge {
+  font-size: 0.65rem; letter-spacing: 0.1em;
+  padding: 0.2rem 0.6rem;
+}
+.badge-free-sm { border: 1px solid #7BA05B; color: #4A7A2E; }
+.badge-paid-sm { border: 1px solid var(--gold); color: var(--gold-dark); }
+.badge-vip-sm { border: 1px solid #A0522D; color: #7B3A1E; }
+.how-content-body { font-size: 0.875rem; color: var(--ink-soft); line-height: 1.9; }
+
+/* PRICING */
+.pricing-section { background: var(--paper-warm); }
+.price-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+.price-card {
+  background: var(--paper);
+  border: 0.5px solid var(--divider);
+  padding: 2rem;
+}
+.price-card.featured {
+  border: 1px solid var(--gold);
+  position: relative;
+}
+.price-featured-label {
+  position: absolute; top: -1px; left: 50%; transform: translateX(-50%);
+  background: var(--gold-dark); color: var(--paper);
+  font-size: 0.65rem; letter-spacing: 0.1em;
+  padding: 0.25rem 1rem;
+}
+.price-type { font-size: 0.7rem; letter-spacing: 0.15em; color: var(--gold); margin-bottom: 0.75rem; }
+.price-name { font-family: var(--serif); font-size: 1.25rem; font-weight: 600; color: var(--ink); margin-bottom: 0.5rem; }
+.price-amount { font-size: 1.75rem; font-weight: 300; color: var(--ink); margin-bottom: 0.25rem; }
+.price-amount span { font-size: 0.85rem; color: var(--ink-soft); }
+.price-desc { font-size: 0.8rem; color: var(--ink-soft); margin-bottom: 1.5rem; line-height: 1.7; }
+.price-features { list-style: none; }
+.price-features li {
+  font-size: 0.8rem; color: var(--ink-soft);
+  padding: 0.35rem 0;
+  border-bottom: 0.5px solid var(--divider);
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.price-features li::before { content: '·'; color: var(--gold); font-size: 1.2rem; }
+.price-features li:last-child { border-bottom: none; }
+
+/* CAFE */
+.cafe-section {}
+.cafe-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+.cafe-visual {
+  background: var(--paper-warm);
+  border: 0.5px solid var(--divider);
+  aspect-ratio: 4/3;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--serif);
+  font-size: 6rem;
+  color: var(--gold-light);
+}
+.cafe-points { list-style: none; }
+.cafe-points li {
+  padding: 1rem 0;
+  border-bottom: 0.5px solid var(--divider);
+  font-size: 0.9rem; color: var(--ink-soft);
+  display: flex; gap: 1rem; align-items: flex-start;
+}
+.cafe-points li:last-child { border-bottom: none; }
+.cafe-point-icon { color: var(--gold); font-size: 1.1rem; flex-shrink: 0; margin-top: 2px; }
+
+/* APPLY */
+.apply-section { background: var(--ink); }
+.apply-section .section-eyebrow { color: var(--gold-light); }
+.apply-section .section-title { color: var(--paper); }
+.apply-section .section-sub { color: rgba(250,247,242,0.6); }
+.apply-section .divider-line { background: var(--gold-dark); }
+.apply-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+.apply-card {
+  border: 0.5px solid rgba(201,169,110,0.2);
+  padding: 1.75rem;
+  transition: border-color 0.2s;
+}
+.apply-card:hover { border-color: var(--gold); }
+.apply-card-title { font-family: var(--serif); font-size: 1rem; font-weight: 600; color: var(--paper); margin-bottom: 0.5rem; }
+.apply-card-price { font-size: 1.25rem; color: var(--gold); margin-bottom: 0.5rem; }
+.apply-card-body { font-size: 0.8rem; color: rgba(250,247,242,0.55); line-height: 1.8; }
+
+/* FORM */
+.form-wrap {
+  background: rgba(255,255,255,0.04);
+  border: 0.5px solid rgba(201,169,110,0.2);
+  padding: 2.5rem;
+  max-width: 600px;
+}
+.form-title { font-family: var(--serif); font-size: 1.1rem; color: var(--paper); margin-bottom: 1.5rem; font-weight: 400; }
+.form-row { margin-bottom: 1.25rem; }
+.form-row label { display: block; font-size: 0.75rem; letter-spacing: 0.1em; color: rgba(250,247,242,0.5); margin-bottom: 0.4rem; }
+.form-row input, .form-row select, .form-row textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 0.5px solid rgba(201,169,110,0.2);
+  padding: 0.75rem 1rem;
+  color: var(--paper);
+  font-family: var(--sans);
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.form-row input:focus, .form-row select:focus, .form-row textarea:focus { border-color: var(--gold); }
+.form-row select option { background: var(--ink); }
+.form-row textarea { resize: vertical; min-height: 80px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.form-submit {
+  width: 100%; padding: 1rem;
+  background: var(--gold-dark); color: var(--paper);
+  border: none; font-family: var(--sans);
+  font-size: 0.9rem; letter-spacing: 0.08em;
+  cursor: pointer; transition: background 0.2s;
+  margin-top: 0.5rem;
+}
+.form-submit:hover { background: var(--gold); }
+.form-note { font-size: 0.75rem; color: rgba(250,247,242,0.35); margin-top: 0.75rem; line-height: 1.6; }
+.success-msg { display: none; text-align: center; padding: 2rem; }
+.success-msg .success-icon { font-family: var(--serif); font-size: 3rem; color: var(--gold); margin-bottom: 1rem; }
+.success-msg p { color: var(--paper); font-size: 0.95rem; line-height: 1.9; }
+
+/* FOOTER */
+footer {
+  background: #0F0D0C;
+  padding: 3rem 2rem;
+  text-align: center;
+}
+.footer-logo { font-family: var(--serif); font-size: 1.5rem; color: var(--gold); margin-bottom: 0.5rem; }
+.footer-tagline { font-size: 0.8rem; color: rgba(250,247,242,0.3); margin-bottom: 2rem; letter-spacing: 0.1em; }
+.footer-links { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
+.footer-links a { font-size: 0.8rem; color: rgba(250,247,242,0.4); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--gold); }
+.footer-copy { font-size: 0.75rem; color: rgba(250,247,242,0.2); }
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; } 50% { opacity: 1; }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  nav { padding: 1rem 1.25rem; }
+  .nav-links { display: none; }
+  .cafe-grid { grid-template-columns: 1fr; }
+  .form-grid { grid-template-columns: 1fr; }
+  .form-wrap { padding: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">마이밍 <span>나의 命</span></div>
+  <div class="nav-links">
+    <a href="#free">무료 서비스</a>
+    <a href="#how">이용 안내</a>
+    <a href="#pricing">요금</a>
+    <a href="#cafe">카페 상담</a>
+    <a href="#apply">서비스 신청</a>
+  </div>
+  <a href="#apply" class="nav-cta">신청하기</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">사주명리 · 자미두수 교차 분석</div>
+  <h1 class="hero-title">
+    당신의 <em>命</em>을<br>당신의 언어로
+  </h1>
+  <p class="hero-sub">
+    기계적 해석이 아닌, 지금 당신의 상황에 맞게 풀어드립니다.<br>
+    사주명리와 자미두수를 교차 분석해 더 깊이 있는 흐름을 안내합니다.
+  </p>
+  <div class="hero-btns">
+    <a href="#free" class="btn-primary">무료로 시작하기</a>
+    <a href="#apply" class="btn-outline">유료 풀이 신청</a>
+  </div>
+  <div class="scroll-hint">↓ 스크롤</div>
+</section>
+
+<!-- FREE SERVICES -->
+<section class="free-section" id="free">
+  <div class="container">
+    <span class="section-eyebrow">FREE SERVICE</span>
+    <h2 class="section-title">먼저 <em>무료</em>로 경험해보세요</h2>
+    <div class="divider-line"></div>
+    <p class="section-sub">부담 없이 시작하세요. 만세력과 자미두수 명반을 무료로 제공해드립니다.</p>
+
+    <div class="free-grid">
+      <div class="free-card">
+        <div class="free-card-icon">曆</div>
+        <div class="free-card-title">만세력 뽑기</div>
+        <div class="free-card-body">생년월일시를 입력하시면 사주팔자 만세력을 즉시 뽑아드립니다. 대운·세운·월운까지 한눈에 확인하세요.</div>
+        <div class="free-badge">무료 제공</div>
+      </div>
+      <div class="free-card">
+        <div class="free-card-icon">盤</div>
+        <div class="free-card-title">자미두수 명반 뽑기</div>
+        <div class="free-card-body">자미두수 12궁 명반을 산출해드립니다. 주성·보성·사화 배치를 확인하실 수 있습니다.</div>
+        <div class="free-badge">무료 제공</div>
+      </div>
+      <div class="free-card">
+        <div class="free-card-icon">解</div>
+        <div class="free-card-title">주 1회 무료 풀이</div>
+        <div class="free-card-body">매주 1분을 선정해 사주명리 또는 자미두수 풀이를 무료로 제공합니다. 신청 후 추첨을 통해 안내드립니다.</div>
+        <div class="free-badge">주 1회 선착순</div>
+      </div>
+    </div>
+
+    <div class="free-cta-wrap">
+      <a href="mailto:문의이메일@마이밍.com?subject=무료 서비스 신청&body=이름:%0A생년월일:%0A출생시각:%0A신청 항목(만세력/명반/무료풀이):" class="btn-primary">무료 서비스 신청하기</a>
+      <p class="free-cta-note">이메일로 생년월일시를 보내주시면 빠르게 발송해드립니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="container">
+    <span class="section-eyebrow">HOW IT WORKS</span>
+    <h2 class="section-title">이렇게 <em>진행</em>됩니다</h2>
+    <div class="divider-line"></div>
+
+    <div class="how-list">
+      <div class="how-item">
+        <div class="how-num">01</div>
+        <div>
+          <div class="how-content-title">
+            무료 서비스로 시작
+            <span class="how-badge badge-free-sm">무료</span>
+          </div>
+          <div class="how-content-body">만세력·자미두수 명반을 무료로 받아보시며 서비스를 경험해보세요. 주 1회 무료 풀이도 신청하실 수 있습니다.</div>
+        </div>
+      </div>
+      <div class="how-item">
+        <div class="how-num">02</div>
+        <div>
+          <div class="how-content-title">
+            유료 풀이 접수 및 결제
+            <span class="how-badge badge-paid-sm">유료</span>
+          </div>
+          <div class="how-content-body">아래 신청 폼을 통해 접수해 주세요. 생년월일시와 현재 가장 궁금한 부분을 함께 적어주시면 더 정확한 풀이가 가능합니다. 결제 안내는 이메일로 발송해드립니다.</div>
+        </div>
+      </div>
+      <div class="how-item">
+        <div class="how-num">03</div>
+        <div>
+          <div class="how-content-title">
+            사주연구가 직접 풀이 작업
+            <span class="how-badge badge-paid-sm">유료</span>
+          </div>
+          <div class="how-content-body">사주연구가가 직접 풀이를 작성합니다. 사주명리 풀이와 자미두수 풀이 두 가지 형식으로 각각 작성해 이메일로 발송해드립니다.</div>
+        </div>
+      </div>
+      <div class="how-item">
+        <div class="how-num">04</div>
+        <div>
+          <div class="how-content-title">
+            이메일 수령 및 추가 문의
+            <span class="how-badge badge-paid-sm">유료</span>
+          </div>
+          <div class="how-content-body">HTML 형식의 풀이 파일을 이메일로 받으시면 됩니다. 풀이를 보신 후 추가로 궁금한 점은 언제든 답장으로 문의해 주세요.</div>
+        </div>
+      </div>
+      <div class="how-item">
+        <div class="how-num">05</div>
+        <div>
+          <div class="how-content-title">
+            언행심리마스터 1:1 면대면 상담
+            <span class="how-badge badge-vip-sm">프리미엄</span>
+          </div>
+          <div class="how-content-body">더 깊은 이야기를 직접 나누고 싶으신 분께는 카페 방문 상담을 연결해드립니다. 수십 년 경험의 언행심리마스터와 1:1로 만나보세요.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing">
+  <div class="container">
+    <span class="section-eyebrow">PRICING</span>
+    <h2 class="section-title"><em>요금</em> 안내</h2>
+    <div class="divider-line"></div>
+    <p class="section-sub">무료로 시작하고, 필요할 때 더 깊은 풀이를 받으세요.</p>
+
+    <div class="price-grid">
+      <div class="price-card">
+        <div class="price-type">기본</div>
+        <div class="price-name">무료 서비스</div>
+        <div class="price-amount">0원</div>
+        <div class="price-desc">만세력·명반 뽑기, 주 1회 풀이 추첨</div>
+        <ul class="price-features">
+          <li>만세력 즉시 발송</li>
+          <li>자미두수 명반 산출</li>
+          <li>주 1회 무료 풀이 신청</li>
+        </ul>
+      </div>
+      <div class="price-card featured">
+        <div class="price-featured-label">인기</div>
+        <div class="price-type">풀이</div>
+        <div class="price-name">사주명리 풀이</div>
+        <div class="price-amount">100,000원 <span>/ 건</span></div>
+        <div class="price-desc">사주연구가 직접 작성 · 이메일 발송</div>
+        <ul class="price-features">
+          <li>맞춤화 어투 풀이 문장</li>
+          <li>대한·세운·월운 분석</li>
+          <li>현재 상황 대조 분석</li>
+          <li>HTML 파일 이메일 발송</li>
+          <li>추가 문의 1회 포함</li>
+        </ul>
+      </div>
+      <div class="price-card featured">
+        <div class="price-featured-label">추천</div>
+        <div class="price-type">풀이</div>
+        <div class="price-name">자미두수 풀이</div>
+        <div class="price-amount">100,000원 <span>/ 건</span></div>
+        <div class="price-desc">자미두수 12궁 기반 풀이 · 이메일 발송</div>
+        <ul class="price-features">
+          <li>명궁·대한 성계 분석</li>
+          <li>사화·살성 흐름 분석</li>
+          <li>유년·유월 시기 안내</li>
+          <li>HTML 파일 이메일 발송</li>
+          <li>추가 문의 1회 포함</li>
+        </ul>
+      </div>
+      <div class="price-card">
+        <div class="price-type">프리미엄</div>
+        <div class="price-name">1:1 면대면 상담</div>
+        <div class="price-amount">150,000원 <span>/ 30분</span></div>
+        <div class="price-desc">언행심리마스터 직접 상담 · 카페 방문</div>
+        <ul class="price-features">
+          <li>언행심리 전문가 상담</li>
+          <li>사주 + 심리 교차 분석</li>
+          <li>카페 방문 예약제</li>
+          <li>주 3일 운영</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CAFE -->
+<section id="cafe">
+  <div class="container">
+    <span class="section-eyebrow">CAFÉ & CONSULTATION</span>
+    <h2 class="section-title">직접 <em>만나는</em> 공간</h2>
+    <div class="divider-line"></div>
+
+    <div class="cafe-grid">
+      <div class="cafe-visual">☸</div>
+      <div>
+        <p style="font-size:0.95rem;color:var(--ink-soft);line-height:1.9;margin-bottom:2rem;">
+          편안한 카페 공간에서 차 한 잔과 함께 이야기를 나누세요.<br>
+          예쁜 부처상이 있는 따뜻한 공간에서 언행심리마스터와 직접 만나실 수 있습니다.
+        </p>
+        <ul class="cafe-points">
+          <li>
+            <span class="cafe-point-icon">☕</span>
+            <div>
+              <strong style="font-weight:500;color:var(--ink);display:block;margin-bottom:2px;">카페 방문 자유</strong>
+              <span style="font-size:0.85rem;">음료·음식을 즐기며 편안하게 머무실 수 있습니다.</span>
+            </div>
+          </li>
+          <li>
+            <span class="cafe-point-icon">🙏</span>
+            <div>
+              <strong style="font-weight:500;color:var(--ink);display:block;margin-bottom:2px;">후원 형태 운영</strong>
+              <span style="font-size:0.85rem;">부처상 앞 후원함을 통해 자유롭게 후원하실 수 있습니다.</span>
+            </div>
+          </li>
+          <li>
+            <span class="cafe-point-icon">📅</span>
+            <div>
+              <strong style="font-weight:500;color:var(--ink);display:block;margin-bottom:2px;">상담 예약제 운영</strong>
+              <span style="font-size:0.85rem;">주 3일 운영 · 하루 3명 한정 · 사전 예약 필수</span>
+            </div>
+          </li>
+          <li>
+            <span class="cafe-point-icon">✉</span>
+            <div>
+              <strong style="font-weight:500;color:var(--ink);display:block;margin-bottom:2px;">예약 문의</strong>
+              <span style="font-size:0.85rem;">아래 신청 폼 또는 이메일로 예약해 주세요.</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APPLY -->
+<section class="apply-section" id="apply">
+  <div class="container">
+    <span class="section-eyebrow">SERVICE APPLICATION</span>
+    <h2 class="section-title" style="color:var(--paper);">서비스 <em style="color:var(--gold);">신청</em>하기</h2>
+    <div class="divider-line" style="background:var(--gold-dark);"></div>
+    <p class="section-sub">아래 폼을 작성해 주시면 이메일로 결제 안내와 함께 빠르게 진행해드립니다.</p>
+
+    <div class="apply-grid">
+      <div class="apply-card">
+        <div class="apply-card-title">사주명리 풀이</div>
+        <div class="apply-card-price">10만원</div>
+        <div class="apply-card-body">사주팔자 기반 맞춤 풀이<br>이메일 HTML 발송</div>
+      </div>
+      <div class="apply-card">
+        <div class="apply-card-title">자미두수 풀이</div>
+        <div class="apply-card-price">10만원</div>
+        <div class="apply-card-body">자미두수 명반 기반 풀이<br>이메일 HTML 발송</div>
+      </div>
+      <div class="apply-card">
+        <div class="apply-card-title">두 가지 모두</div>
+        <div class="apply-card-price">별도 문의</div>
+        <div class="apply-card-body">사주명리 + 자미두수<br>함께 신청 시 할인 문의</div>
+      </div>
+      <div class="apply-card">
+        <div class="apply-card-title">면대면 상담 예약</div>
+        <div class="apply-card-price">15만원 / 30분</div>
+        <div class="apply-card-body">언행심리마스터 1:1<br>카페 방문 예약</div>
+      </div>
+    </div>
+
+    <div class="form-wrap" id="formWrap">
+      <div class="form-title">신청 정보를 입력해 주세요</div>
+      <form onsubmit="submitForm(event)">
+        <div class="form-grid">
+          <div class="form-row">
+            <label>이름</label>
+            <input type="text" placeholder="홍길동" required>
+          </div>
+          <div class="form-row">
+            <label>이메일</label>
+            <input type="email" placeholder="your@email.com" required>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-row">
+            <label>생년월일 (양력)</label>
+            <input type="text" placeholder="1990년 1월 1일" required>
+          </div>
+          <div class="form-row">
+            <label>출생 시각</label>
+            <input type="text" placeholder="오전 2시 30분 (모르면 모름)">
+          </div>
+        </div>
+        <div class="form-row">
+          <label>성별</label>
+          <select required>
+            <option value="">선택해 주세요</option>
+            <option>남성</option>
+            <option>여성</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>신청 서비스</label>
+          <select required>
+            <option value="">선택해 주세요</option>
+            <option>사주명리 풀이 (10만원)</option>
+            <option>자미두수 풀이 (10만원)</option>
+            <option>두 가지 모두 (할인 문의)</option>
+            <option>면대면 상담 예약 (15만원/30분)</option>
+            <option>무료 서비스 (만세력·명반)</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>지금 가장 궁금한 부분</label>
+          <textarea placeholder="연애·결혼 / 직업·사업 / 돈·재정 / 건강 / 기타 — 자유롭게 적어주세요. 더 정확한 풀이에 도움이 됩니다."></textarea>
+        </div>
+        <div class="form-row">
+          <label>최근 1~2년 큰 변화 (선택)</label>
+          <textarea placeholder="있었다면 간단히 적어주세요. 명반 대조에 활용됩니다." style="min-height:60px;"></textarea>
+        </div>
+        <button type="submit" class="form-submit">신청서 보내기</button>
+        <p class="form-note">접수 후 24시간 이내 결제 안내 이메일을 발송해드립니다.<br>결제 완료 후 풀이 작업을 시작합니다.</p>
+      </form>
+    </div>
+
+    <div class="success-msg" id="successMsg">
+      <div class="success-icon">命</div>
+      <p style="color:var(--paper);">신청이 접수되었습니다.<br><br>24시간 이내에 결제 안내 이메일을 보내드립니다.<br>추가 문의사항은 언제든 이메일로 연락해 주세요.<br><br><span style="color:var(--gold);">감사합니다.</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">마이밍</div>
+  <div class="footer-tagline">나의 命 · 사주명리 · 자미두수</div>
+  <div class="footer-links">
+    <a href="#free">무료 서비스</a>
+    <a href="#how">이용 안내</a>
+    <a href="#pricing">요금</a>
+    <a href="#cafe">카페 상담</a>
+    <a href="#apply">신청하기</a>
+    <a href="mailto:문의이메일@마이밍.com">이메일 문의</a>
+  </div>
+  <div class="footer-copy">© 2025 마이밍. All rights reserved.</div>
+</footer>
+
+<script>
+function submitForm(e) {
+  e.preventDefault();
+  document.getElementById('formWrap').style.display = 'none';
+  document.getElementById('successMsg').style.display = 'block';
+}
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(el => {
+    if (el.isIntersecting) {
+      el.target.style.opacity = '1';
+      el.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.free-card, .how-item, .price-card, .apply-card, .cafe-points li').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(16px)';
+  el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
